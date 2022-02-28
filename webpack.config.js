@@ -1,22 +1,22 @@
-var webpack = require('webpack'),
+const webpack = require('webpack'),
   path = require('path'),
   fileSystem = require('fs-extra'),
   env = require('./utils/env'),
   CopyWebpackPlugin = require('copy-webpack-plugin'),
   HtmlWebpackPlugin = require('html-webpack-plugin'),
-  TerserPlugin = require('terser-webpack-plugin');
-var { CleanWebpackPlugin } = require('clean-webpack-plugin');
+  TerserPlugin = require('terser-webpack-plugin')
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
 
-const ASSET_PATH = process.env.ASSET_PATH || '/';
+const ASSET_PATH = process.env.ASSET_PATH || '/'
 
-var alias = {
+const alias = {
   'react-dom': '@hot-loader/react-dom',
-};
+}
 
 // load the secrets
-var secretsPath = path.join(__dirname, 'secrets.' + env.NODE_ENV + '.js');
+const secretsPath = path.join(__dirname, 'secrets.' + env.NODE_ENV + '.js')
 
-var fileExtensions = [
+const fileExtensions = [
   'jpg',
   'jpeg',
   'png',
@@ -27,13 +27,13 @@ var fileExtensions = [
   'ttf',
   'woff',
   'woff2',
-];
+]
 
 if (fileSystem.existsSync(secretsPath)) {
-  alias['secrets'] = secretsPath;
+  alias['secrets'] = secretsPath
 }
 
-var options = {
+const options = {
   mode: process.env.NODE_ENV || 'development',
   entry: {
     newtab: path.join(__dirname, 'src', 'pages', 'Newtab', 'index.jsx'),
@@ -128,7 +128,7 @@ var options = {
                 version: process.env.npm_package_version,
                 ...JSON.parse(content.toString()),
               })
-            );
+            )
           },
         },
       ],
@@ -145,7 +145,7 @@ var options = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: 'src/assets/img/icon-128.png',
+          from: 'src/assets/img/icon@192px.png',
           to: path.join(__dirname, 'build'),
           force: true,
         },
@@ -154,7 +154,7 @@ var options = {
     new CopyWebpackPlugin({
       patterns: [
         {
-          from: 'src/assets/img/icon-34.png',
+          from: 'src/assets/img/icon@32px.png',
           to: path.join(__dirname, 'build'),
           force: true,
         },
@@ -194,10 +194,10 @@ var options = {
   infrastructureLogging: {
     level: 'info',
   },
-};
+}
 
 if (env.NODE_ENV === 'development') {
-  options.devtool = 'cheap-module-source-map';
+  options.devtool = 'cheap-module-source-map'
 } else {
   options.optimization = {
     minimize: true,
@@ -206,7 +206,7 @@ if (env.NODE_ENV === 'development') {
         extractComments: false,
       }),
     ],
-  };
+  }
 }
 
-module.exports = options;
+module.exports = options
